@@ -44,16 +44,8 @@ void ICACHE_FLASH_ATTR uartTask(os_event_t* events)
     }
     #endif
 
-    // pub uart_buffer
-    char* pubTopic = (char*)os_zalloc(os_strlen(flashParam->user) + 13);
-
-    pubTopic[0] = 0;
-    os_strcat(pubTopic, "/devices/");
-    os_strcat(pubTopic, flashParam->user);
-    os_strcat(pubTopic, "/in");
-    MQTT_Publish(mqttClient, pubTopic, uart_buffer, len, 0, 0);
-
-    os_free(pubTopic);
+    if (mqttConnectionFlag)
+      MQTT_Publish(mqttClient, pubTopic, uart_buffer, len, 0, 0);
   }
 
   if (UART_RXFIFO_FULL_INT_ST == (READ_PERI_REG(UART_INT_ST(UART0)) &

@@ -24,7 +24,7 @@ void GPIOConfig(void)
   // gpio_output_set(0, BIT2, BIT2, 0);
   // GPIO_OUTPUT_SET(2, 0);
 
-  INFO("GPIO: config\r\n");
+  // INFO("GPIO: config\r\n");
 }
 
 uint32_t ICACHE_FLASH_ATTR LED_Set(uint8_t state)

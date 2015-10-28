@@ -71,11 +71,7 @@ uint32_t ICACHE_FLASH_ATTR
 WIFI_Connect(flash_param_t* flashParam, WifiCallback callback)
 {
 	struct station_config stationConf;
-
-	os_memset(&stationConf, 0, sizeof(struct station_config));
-
-	os_memcpy(stationConf.ssid, flashParam->ssid, os_strlen(flashParam->ssid));
-	os_memcpy(stationConf.password, flashParam->pwd, os_strlen(flashParam->pwd));
+  wifi_station_get_config_default(&stationConf);
 
 	wifi_station_set_auto_connect(FALSE);
 	wifi_set_opmode(STATION_MODE);

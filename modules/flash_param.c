@@ -49,14 +49,7 @@ void ICACHE_FLASH_ATTR flash_param_init_defaults(void) {
 	flash_param->magic = FLASH_PARAM_MAGIC;
 	flash_param->version = FLASH_PARAM_VERSION;
 	flash_param->baud = 115200;
-	flash_param->port = 23;
 	flash_param->uartconf0 = CALC_UARTMODE(EIGHT_BITS, NONE_BITS, ONE_STOP_BIT);
-
-  // WIFI param
-  os_memcpy(flash_param->ssid, WIFI_SSID, os_strlen(WIFI_SSID));
-  flash_param->ssid[os_strlen(WIFI_SSID)] = 0;
-  os_memcpy(flash_param->pwd, WIFI_PWD, os_strlen(WIFI_PWD));
-  flash_param->pwd[os_strlen(WIFI_PWD)] = 0;
 
   // MQTT param
   os_memcpy(flash_param->mqttHost, MQTT_HOST, os_strlen(MQTT_HOST));

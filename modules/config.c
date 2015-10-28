@@ -9,16 +9,7 @@
 #include "driver/uart.h"
 
 #include "flash_param.h"
-
-struct mqtt_config {
-  char host[64];
-  uint16_t port;
-  char clientId[64];
-  char user[64];
-  char pass[64];
-  uint32_t keepalive;
-  uint8_t cleanSession;
-};
+#include "mqtt_app.h"
 
 #else
 
@@ -35,16 +26,6 @@ struct station_config {
 	uint8_t password[64];
 	uint8_t bssid_set;
 	uint8_t bssid[6];
-};
-
-struct mqtt_config {
-  char host[64];
-  uint16_t port;
-  char clientId[64];
-  char user[64];
-  char pass[64];
-  uint32_t keepalive;
-  uint8_t cleanSession;
 };
 
 #define os_sprintf	sprintf
@@ -179,7 +160,7 @@ void config_cmd_reset(uint8_t argc, char *argv[]) {
 void config_cmd_gpio2(uint8_t argc, char *argv[]) {
 	if (argc == 0)
   {
-	  os_printf("ARGC = 0\r\n");
+	  // os_printf("ARGC = 0\r\n");
     ;
   }
   else {
@@ -290,6 +271,13 @@ void config_cmd_flash(uint8_t argc, char *argv[]) {
     ;
 }
 
+void config_cmd_ping(uint8_t argc, char* argv[]) {
+  if (mqttConnectionFlag)
+    MQTT_Publish(mqttClient, pubTopic, "ESP PING_RSP\r\n", 14, 0, 0);
+
+  uart0_sendStr("ESP PING_RSP\r\n");
+}
+
 // spaces are not supported in the ssid or password
 void config_cmd_sta(uint8_t argc, char *argv[]) {
 	char *ssid = argv[1], *password = argv[2];
@@ -319,24 +307,45 @@ void config_cmd_sta(uint8_t argc, char *argv[]) {
 // MQTT config
 void config_cmd_mqtt(uint8_t argc, char * argv[])
 {
-  struct mqtt_config mqttConfig;
-  os_bzero(&mqttConfig, sizeof(struct mqtt_config));
-  if (argc == 7)
+  flash_param_t* flash_param = flash_param_get();
+  if (argc == 0)
   {
-    os_strncpy(mqttConfig.host, argv[1], sizeof(mqttConfig.host));
-    mqttConfig.port = *argv[2];
-    os_strncpy(mqttConfig.clientId, argv[3], sizeof(mqttConfig.clientId));
-    os_strncpy(mqttConfig.user, argv[4], sizeof(mqttConfig.user));
-    os_strncpy(mqttConfig.pass, argv[5], sizeof(mqttConfig.pass));
-    mqttConfig.keepalive = *argv[6];
-    mqttConfig.cleanSession = *argv[7];
-
-    // TO DO : reconnect mqtt
+    // espbuffersentprintf(conn, "MQTT_HOST=%s MQTT_PORT=%d MQTT_CLIENT_ID=%s MQTT_USER=%s MQTT_PASS=%s KEEPALIVE=%d CLEAN_SESSION=%d", argv[1], atoi(argv[2]), argv[3], argv[4], argv[5], atoi(argv[6]), atoi(argv[7]);
   }
   else
   {
-    // TO DO : send error message
-    ;
+    if (argc == 2)
+    {
+      os_strncpy(flash_param->mqttHost, argv[1], sizeof(flash_param->mqttHost));
+      flash_param->mqttPort = atoi(argv[2]);
+    }
+    else if (argc == 5)
+    {
+      os_strncpy(flash_param->mqttHost, argv[1], sizeof(flash_param->mqttHost));
+      flash_param->mqttPort = atoi(argv[2]);
+      os_strncpy(flash_param->clientId, argv[3], sizeof(flash_param->clientId));
+      os_strncpy(flash_param->user, argv[4], sizeof(flash_param->user));
+      os_strncpy(flash_param->pass, argv[5], sizeof(flash_param->pass));
+    }
+    else if (argc == 7)
+    {
+      os_strncpy(flash_param->mqttHost, argv[1], sizeof(flash_param->mqttHost));
+      flash_param->mqttPort = atoi(argv[2]);
+      os_strncpy(flash_param->clientId, argv[3], sizeof(flash_param->clientId));
+      os_strncpy(flash_param->user, argv[4], sizeof(flash_param->user));
+      os_strncpy(flash_param->pass, argv[5], sizeof(flash_param->pass));
+      flash_param->keepalive = atoi(argv[6]);
+      flash_param->cleanSession = atoi(argv[7]);
+    }
+    else
+    {
+      // error
+    }
+
+    // save and reset
+    flash_param_set();
+    os_delay_us(10000);
+    system_restart();
   }
 }
 
@@ -348,6 +357,7 @@ const config_commands_t config_commands[] = {
     // add user control of MQTT
     { "MQTT", &config_cmd_mqtt },
     { "GPIO", &config_cmd_gpio2 },
+    { "PING", &config_cmd_ping },
 		{ NULL, NULL }
 	};
 

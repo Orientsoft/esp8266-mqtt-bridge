@@ -13,17 +13,14 @@ void config_execute(void);
 
 #endif
 
+// this works for now
 #define CONFIG_DYNAMIC
 #ifdef CONFIG_DYNAMIC
-
-#define WIFI_SSID "HiWiFi_orientsoft"
-#define WIFI_PWD "welcome1"
 
 typedef struct config_commands {
 	char *command;
 	void(*function)(uint8_t argc, char *argv[]);
 } config_commands_t;
-
 
 void config_parse(const char *buf, int len);
 

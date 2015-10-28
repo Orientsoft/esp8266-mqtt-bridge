@@ -6,5 +6,6 @@
 #define MAX_MQTT_BUFFER 1024
 
 extern MQTT_Client* mqttClient;
-
+extern char* pubTopic;
+extern bool mqttConnectionFlag;
 #endif

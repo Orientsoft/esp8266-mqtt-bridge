@@ -11,20 +11,32 @@ MQTT_Client* mqttClient;
 static char mqtt_buffer[MAX_MQTT_BUFFER];
 flash_param_t* param;
 
+// pub topic
+char* pubTopic;
+bool mqttConnectionFlag = false;
+
 uint32_t mqttConnectedCb(uint32_t* args)
 {
-  MQTT_Publish(mqttClient, "/devices/UUID/in", "hello, esp", 10, 0, 0);
+  mqttConnectionFlag = true;
+
+  pubTopic = (char*)os_zalloc(os_strlen(param->user) + 13);
+  pubTopic[0] = 0;
+  os_strcat(pubTopic, "/devices/");
+  os_strcat(pubTopic, param->user);
+  os_strcat(pubTopic, "/in");
+
+  MQTT_Publish(mqttClient, pubTopic, "ESP RDY\r\n", 9, 0, 0);
 
   // uart0_sendStr("MQTT CONNECTED\r\n");
   LED_Set(1);
 
   // MQTT sub /devices/UUID/out
   char* subTopic = (char*)os_zalloc(os_strlen(param->user) + 14);
-  
   subTopic[0] = 0;
   os_strcat(subTopic, "/devices/");
   os_strcat(subTopic, param->user);
   os_strcat(subTopic, "/out");
+
   // qos = 0
   MQTT_Subscribe(mqttClient, subTopic, 0);
   
@@ -33,13 +45,15 @@ uint32_t mqttConnectedCb(uint32_t* args)
 
 void mqttDisconnectedCb(uint32_t* args)
 {
+  mqttConnectionFlag = false;
+
   // uart0_sendStr("MQTT DISCONNECTED\r\n");
   LED_Set(0);
 }
 
 void mqttPublishedCb(uint32_t* args)
 {
-  // nothing for now
+  // uart0_sendStr("MQTT Published\r\n");
 }
 
 void mqttDataCb(uint32_t* args,

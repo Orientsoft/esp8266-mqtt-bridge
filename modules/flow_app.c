@@ -20,7 +20,7 @@ static void ICACHE_FLASH_ATTR flowTask(os_event_t* event)
     case SIG_UART:
     uartTask(event);
     break;
-    
+
     case SIG_MQTT:
     MQTT_Task(event);
     break;

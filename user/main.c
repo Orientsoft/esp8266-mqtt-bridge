@@ -22,7 +22,6 @@ void wifiCallback(uint8_t wifiStatus)
   {
     // uart0_sendStr("STATION_GOT_IP\r\n");
     initMqtt(flashParam);
-    initFlow();
   }
 }
 
@@ -46,6 +45,7 @@ user_init(void)
   // uart0_sendStr(buf);
 
   GPIOConfig();
+  initFlow();
 
 	system_init_done_cb(initCb);
 }
