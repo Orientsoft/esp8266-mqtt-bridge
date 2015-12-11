@@ -165,13 +165,20 @@ void ICACHE_FLASH_ATTR initMqtt(flash_param_t* flashParam)
     flashParam->pass,
     flashParam->keepalive,
     flashParam->cleanSession);
+  
+  uart0_sendStr(flashParam->clientId);
+  uart0_sendStr("\r\n");
+  uart0_sendStr(flashParam->user);
+  uart0_sendStr("\r\n");
+  uart0_sendStr(flashParam->pass);
+  uart0_sendStr("\r\n");
 
   MqttLwt("/lwt", "offline", 0, 0);
 
   // no ssl
-  MqttConnect(flashParam->mqttHost,
-    flashParam->mqttPort,
-    0);
+  MqttConnect(MQTT_HOST, MQTT_PORT, 0);
+  // MqttConnect("z.borgnix.com", 1883, 0);
+
   #else
   MqttSetup(MQTT_CLIENTID,
     MQTT_USER,

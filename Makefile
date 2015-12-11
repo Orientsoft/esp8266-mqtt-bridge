@@ -70,7 +70,7 @@ else
 # We are under other system, may be Linux. Assume using gcc.
 
 		ESPPORT ?= /dev/ttyUSB0
-		SDK_BASE	?= /home/xd/project/esp_iot_sdk_v1.2.0
+		SDK_BASE	?= esp_iot_sdk
 #    SDK_BASE ?= /home/xd/project/esp_iot_rtos_sdk
 
 	CCFLAGS += -Os -ffunction-sections -fno-jump-tables

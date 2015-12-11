@@ -2,7 +2,7 @@
 #define __FLASH_PARAM_H__
 
 #define FLASH_PARAM_MAGIC	9527
-#define FLASH_PARAM_VERSION	2
+#define FLASH_PARAM_VERSION	1
 
 typedef struct flash_param {
 	uint32_t magic;
@@ -20,9 +20,9 @@ typedef struct flash_param {
   char pass[64];
   uint32_t keepalive;
   uint8_t cleanSession;
-
+  uint8_t staFlag;
   // padding
-	// char padding[2]; // set array index so that the flash area is readable as data with aligned 4-byte reads.
+	char padding[3]; // set array index so that the flash area is readable as data with aligned 4-byte reads.
 } flash_param_t; 
 
 flash_param_t *flash_param_get(void);

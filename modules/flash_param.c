@@ -68,6 +68,8 @@ void ICACHE_FLASH_ATTR flash_param_init_defaults(void) {
 
   flash_param->keepalive = MQTT_KEEPALIVE;
   flash_param->cleanSession = MQTT_CLEANSESSION;
+  
+  flash_param->staFlag = 0;
 
 	flash_param_set();
 }
