@@ -31,16 +31,22 @@ flash_param_t *ICACHE_FLASH_ATTR flash_param_get(void) {
 		flash_param_read(&flash_param);
 		flash_param_loaded = 1;
 	}
+
+  flashDecrypt(&flash_param);
+
 	return &flash_param;
 }
 
 int ICACHE_FLASH_ATTR flash_param_set(void) {
-	flash_param_write(&flash_param);
+	flashCrypt(&flash_param);
+
+  flash_param_write(&flash_param);
 	flash_param_t tmp;
 	flash_param_read(&tmp);
 	if (memcmp(&tmp, &flash_param, sizeof(flash_param_t)) != 0) {
 		return 0;
 	}
+
 	return 1;
 }
 
