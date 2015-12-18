@@ -278,6 +278,17 @@ void config_cmd_ping(uint8_t argc, char* argv[]) {
   uart0_sendStr("ESP PING_RSP\r\n");
 }
 
+void config_cmd_clear(uint8_t argc, char* argv[]) {
+  // clear station and mqtt settings
+  flash_param_t* flashParam = flash_param_get();
+  flashParam->staFlag = 0;
+
+  // save and reset
+  flash_param_set();
+  os_delay_us(10000);
+  system_restart();
+}
+
 // spaces are not supported in the ssid or password
 void config_cmd_sta(uint8_t argc, char *argv[]) {
 	char *ssid = argv[1], *password = argv[2];
@@ -358,6 +369,7 @@ const config_commands_t config_commands[] = {
     { "MQTT", &config_cmd_mqtt },
     { "GPIO", &config_cmd_gpio2 },
     { "PING", &config_cmd_ping },
+    { "CLEAR", &config_cmd_clear },
 		{ NULL, NULL }
 	};
 

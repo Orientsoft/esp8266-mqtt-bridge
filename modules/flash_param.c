@@ -32,13 +32,13 @@ flash_param_t *ICACHE_FLASH_ATTR flash_param_get(void) {
 		flash_param_loaded = 1;
 	}
 
-  flashDecrypt(&flash_param);
+  // flashDecrypt(&flash_param);
 
 	return &flash_param;
 }
 
 int ICACHE_FLASH_ATTR flash_param_set(void) {
-	flashCrypt(&flash_param);
+	// flashCrypt(&flash_param);
 
   flash_param_write(&flash_param);
 	flash_param_t tmp;

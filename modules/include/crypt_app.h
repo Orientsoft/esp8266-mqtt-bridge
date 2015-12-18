@@ -1,6 +1,8 @@
 #ifndef CRYPT_APP_H
 #define CRYPT_APP_H
 
+extern uint32_t* globalKey;
+
 void flashCrypt(flash_param_t* flashParam);
 void flashDecrypt(flash_param_t* flashParam);
 

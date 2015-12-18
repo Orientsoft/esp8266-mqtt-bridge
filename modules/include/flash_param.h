@@ -2,7 +2,7 @@
 #define __FLASH_PARAM_H__
 
 #define FLASH_PARAM_MAGIC	9527
-#define FLASH_PARAM_VERSION	1
+#define FLASH_PARAM_VERSION	2
 
 typedef struct flash_param {
 	uint32_t magic;
