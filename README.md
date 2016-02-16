@@ -22,4 +22,4 @@ Any data published to /dev/YOUR_UUID/out topic will be redirected to ESP serial 
 Also, you could write data to your device's serial port, and the bridge will publish your data to /dev/YOUR_UUID/in topic.  
 Reset parameters
 ----------------
-To reset the parameters, you could pull low the GPIO2 pin of ESP8266. The parameters will be cleared from flash and the bridge will enter AP mode providing setup interfaces.  
+To reset the parameters, you could pull low the GPIO13 pin of ESP8266 (ESP-01 doesn't have this pin, so you should use this function on ESP-12F). The parameters will be cleared from flash and the bridge will enter AP mode providing setup interfaces.  
