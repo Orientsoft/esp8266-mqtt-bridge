@@ -7,7 +7,7 @@
 
 /*DEFAULT CONFIGURATIONS*/
 
-#define MQTT_HOST			"z.borgnix.cn" //or "mqtt.yourdomain.com"
+#define MQTT_HOST			"z.borgnix.com" //or "mqtt.yourdomain.com"
 #define MQTT_PORT			1883
 #define MQTT_BUF_SIZE		1024
 #define MQTT_KEEPALIVE		120	 /*second*/

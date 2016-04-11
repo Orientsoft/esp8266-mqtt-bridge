@@ -73,13 +73,11 @@ WIFI_Connect(flash_param_t* flashParam, WifiCallback callback)
 	struct station_config stationConf;
   wifi_station_get_config_default(&stationConf);
 
-  /*
   uart0_sendStr("WIFI_Connect\r\n");
   uart0_sendStr(stationConf.ssid);
   uart0_sendStr("\r\n");
   uart0_sendStr(stationConf.password);
   uart0_sendStr("\r\n");
-  */
 
 	wifi_station_set_auto_connect(FALSE);
 	wifi_set_opmode(STATION_MODE);

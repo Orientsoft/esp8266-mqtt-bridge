@@ -19,6 +19,9 @@ uint32_t mqttConnectedCb(uint32_t* args)
 {
   mqttConnectionFlag = true;
 
+  uart0_sendStr("MQTT CONNECTED\r\n");
+  LED_Set(1);
+
   pubTopic = (char*)os_zalloc(os_strlen(param->user) + 13);
   pubTopic[0] = 0;
   os_strcat(pubTopic, "/devices/");
@@ -26,9 +29,6 @@ uint32_t mqttConnectedCb(uint32_t* args)
   os_strcat(pubTopic, "/in");
 
   MQTT_Publish(mqttClient, pubTopic, "ESP RDY\r\n", 9, 0, 0);
-
-  // uart0_sendStr("MQTT CONNECTED\r\n");
-  LED_Set(1);
 
   // MQTT sub /devices/UUID/out
   char* subTopic = (char*)os_zalloc(os_strlen(param->user) + 14);
